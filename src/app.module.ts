@@ -9,16 +9,18 @@ import {UserController} from "./user/user.controller";
 import { OrderService } from './order/order.service';
 import { OrderController } from './order/order.controller';
 import { OrderModule } from './order/order.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb+srv://root1:password*@cluster36525.0es7l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster36525', {}),
     UserModule,
-    OrderModule
+    OrderModule,
+    AuthModule
   ],
-  controllers: [AppController, OrderController],
-  providers: [AppService, OrderService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
 
