@@ -6,5 +6,6 @@ export const UserSchema = new mongoose.Schema({
     email: String,
     phone: String,
     password: String,
+    role: String,
     created_at: { type: Date, default: Date.now }
 })

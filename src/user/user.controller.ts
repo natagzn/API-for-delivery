@@ -1,6 +1,22 @@
-import { Controller, Get, Res, HttpStatus, Post, Body, Put, Query, NotFoundException, Delete, Param } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Res,
+    HttpStatus,
+    Post,
+    Body,
+    Put,
+    Query,
+    NotFoundException,
+    Delete,
+    Param,
+    UseGuards
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDTO } from './dto/create-user.dto';
+import {Roles} from "../auth/roles.decorator";
+import { AuthGuard } from '../auth/auth.guard';
+import {RolesGuard} from "../auth/roles.guard";
 
 
 @Controller('user')
@@ -21,7 +37,10 @@ export class UserController {
         }
     }
 
+
     @Get('all')
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(['admin'])
     async getAllUser(@Res() res) {
         try{
             const users = await this.userService.getAllUser();
