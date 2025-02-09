@@ -10,6 +10,9 @@ import { OrderService } from './order/order.service';
 import { OrderController } from './order/order.controller';
 import { OrderModule } from './order/order.module';
 import { AuthModule } from './auth/auth.module';
+import { DeliveryModule } from './delivery/delivery.module';
+import { StatusOrderModule } from './status-order/status-order.module';
+import { StatusDeliveryModule } from './status-delivery/status-delivery.module';
 
 
 @Module({
@@ -17,7 +20,10 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forRoot('mongodb+srv://root1:password*@cluster36525.0es7l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster36525', {}),
     UserModule,
     OrderModule,
-    AuthModule
+    AuthModule,
+    DeliveryModule,
+    StatusOrderModule,
+    StatusDeliveryModule
   ],
   controllers: [AppController],
   providers: [AppService],
