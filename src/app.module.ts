@@ -13,17 +13,21 @@ import { AuthModule } from './auth/auth.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { StatusOrderModule } from './status-order/status-order.module';
 import { StatusDeliveryModule } from './status-delivery/status-delivery.module';
+import { GoodsService } from './goods/goods.service';
+import { GoodsController } from './goods/goods.controller';
+import { GoodsModule } from './goods/goods.module';
 
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://root1:password*@cluster36525.0es7l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster36525', {}),
+    MongooseModule.forRoot('mongodb+srv://root2:password*@cluster36525.0es7l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster36525', {}),
     UserModule,
     OrderModule,
     AuthModule,
     DeliveryModule,
     StatusOrderModule,
-    StatusDeliveryModule
+    StatusDeliveryModule,
+    GoodsModule
   ],
   controllers: [AppController],
   providers: [AppService],

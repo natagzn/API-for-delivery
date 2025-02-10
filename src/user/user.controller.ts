@@ -13,16 +13,21 @@ import {
     UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { CreateUserDTO } from './dto/create-user-d-t.o';
 import {Roles} from "../auth/roles.decorator";
 import { AuthGuard } from '../auth/auth.guard';
 import {RolesGuard} from "../auth/roles.guard";
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
 
-
+@ApiTags('User')
 @Controller('user')
 export class UserController {
     constructor(private userService: UserService) { }
 
+    @ApiOperation({ summary: 'Create a new user' })
+    @ApiResponse({ status: 200, description: 'User successfully created' })
+    @ApiResponse({ status: 400, description: 'Bad Request' })
+    @ApiBearerAuth()
     @Post('create')
     async addUser(@Res() res, @Body() createUserDTO: CreateUserDTO) {
         try{
@@ -37,9 +42,13 @@ export class UserController {
         }
     }
 
-
-    @Get('all')
+    @ApiOperation({ summary: 'Get all users' })
+    @ApiResponse({ status: 200, description: 'Users retrieved successfully' })
+    @ApiBearerAuth()
     @UseGuards(AuthGuard, RolesGuard)
+    @ApiBearerAuth()
+    @Get('all')
+    //@UseGuards(AuthGuard, RolesGuard)
     @Roles(['admin'])
     async getAllUser(@Res() res) {
         try{
@@ -50,6 +59,11 @@ export class UserController {
         }
     }
 
+    @ApiOperation({ summary: 'Get a user by ID' })
+    @ApiResponse({ status: 200, description: 'User found' })
+    @ApiResponse({ status: 404, description: 'User not found' })
+    @ApiParam({ name: 'userID', type: 'string', description: 'User ID' })
+    @ApiBearerAuth()
     @Get('user/:userID')
     async getUser(@Res() res, @Param('userID') userID) {
         try{
@@ -61,6 +75,11 @@ export class UserController {
         }
     }
 
+    @ApiOperation({ summary: 'Update a user' })
+    @ApiResponse({ status: 200, description: 'User successfully updated' })
+    @ApiResponse({ status: 404, description: 'User not found' })
+    @ApiQuery({ name: 'userID', type: 'string', description: 'User ID' })
+    @ApiBearerAuth()
     @Put('/update')
     async updateUser(@Res() res, @Query('userID') userID, @Body() createUserDTO: CreateUserDTO) {
         try{
@@ -75,9 +94,15 @@ export class UserController {
         }
     }
 
+    @ApiOperation({ summary: 'Delete a user' })
+    @ApiResponse({ status: 200, description: 'User successfully deleted' })
+    @ApiResponse({ status: 404, description: 'User not found' })
+    @ApiQuery({ name: 'userID', type: 'string', description: 'User ID' })
+    @ApiBearerAuth()
     @Delete('/delete')
     async deleteUser(@Res() res, @Query('userID') userID) {
         try{
+            console.log(userID);
             const user = await this.userService.deleteUser(userID);
             if (!user) throw new NotFoundException('User does not exist');
             return res.status(HttpStatus.OK).json({
